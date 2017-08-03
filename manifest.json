@@ -1,0 +1,28 @@
+{
+  "name": "充电桩监控通知",
+  "version": "1.0.1",
+  "description":
+    "监控指定的的充电桩使用状态,并发出通知",
+  "icons":
+  {
+    "48": "48.png",
+    "128": "128.png"
+  },
+  "browser_action": {
+    "default_icon":"19_gray.png",
+    "default_title": "充电桩监控通知",
+    "default_popup": "popup.html"
+  },
+  "content_security_policy": "script-src 'self' 'unsafe-eval' https://ssl.google-analytics.com; object-src 'self'",
+  "permissions": [
+    "notifications",
+    "https://qpush.me/",
+    "http://*.bfc.com/",
+    "http://*.renrenchongdian.com/"
+  ],
+  "options_page": "options.html",
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "manifest_version": 2
+}
