@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+<script src="js/jquery-1.11.0.min.js"></script>
+<script src="js/underscore-min.js"></script>
+<script src="js/backbone-min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<style>
+
+body{font-size:14px;}
+.table{margin-bottom:0}
+.table td{
+    font-size:12px;
+    white-space: nowrap;
+}
+.pile{
+    background-color: #fff;
+    border-color: #ddd;
+    border-width: 1px;
+    border-radius: 4px 4px 0 0;
+    box-shadow: none;
+    padding: 10px;
+    margin: 10px;
+    border-style: solid;
+    
+}
+</style>
+</head>
+<body>
+<div id="stage"></div>
+</body>
+<script id="pile_info" type="text/x-jquery-tmpl">
+<div class="pile col-sm-12">
+    <table class="table">
+        <caption>充电桩:<%=name%></caption>
+        <tbody>
+            <tr>
+                <td>状态:<span class="label <%=statusClass%>"><%=runStatus%></span></td>
+                <td>价格:<span class="label label-warning"><%=currentPrice%></span></td>
+                <td>进度:<span class="label label-info"><%=chargingProgress%></span></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</script>
+<script src="js/controller.js"></script>
+</html>
