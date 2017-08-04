@@ -1,6 +1,6 @@
 {
   "name": "充电桩监控通知",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description":
     "监控指定的的充电桩使用状态,并发出通知",
   "icons":
@@ -15,6 +15,7 @@
   },
   "content_security_policy": "script-src 'self' 'unsafe-eval' https://ssl.google-analytics.com; object-src 'self'",
   "permissions": [
+    "storage",
     "notifications",
     "https://qpush.me/",
     "http://*.bfc.com/",

@@ -15,6 +15,10 @@ function getTemplateVars(pile) {
             vars['runStatus']   = "空闲";
             vars['statusClass'] = "label-success";
             break;
+        case 2:
+            vars['runStatus']  = "准备充电";
+            vars['statusClass'] = "label-danger";
+            break;
         case 3:
             vars['runStatus']  = "充电中";
             vars['statusClass'] = "label-danger";

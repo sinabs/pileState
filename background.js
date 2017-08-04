@@ -31,7 +31,7 @@ function checkPileState() {
                    fullPile.push(pile);
                }
 
-               if(JSON.parse(localStorage.isPushPhone)){
+               if(checkPushPhone()){
                    pushPhoneNotification(pile);
                }
            }
@@ -54,6 +54,29 @@ function checkPileState() {
     });
 }
 
+/**
+ * 验证手机推送通知时间范围
+ * @returns {boolean}
+ */
+function checkPushPhone() {
+    if(JSON.parse(localStorage.isPushPhone)){
+        var date = new Date();
+        var weekRange = localStorage.week.split(',')
+        var min = Math.min.apply(window, weekRange);
+        var max = Math.max.apply(window, weekRange);
+        if((date.getDay() >= min && date.getDay() <= max) &&
+            ((date.getHours() >= localStorage.startHour && date.getHours() <= localStorage.endHour))){
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
+ * 显示Dadge信息
+ * @param pile
+ * @param isNew
+ */
 function showBadgeInfo(pile,isNew) {
     //设置提示图标
     chrome.browserAction.setIcon({path:"19_green.png"});
@@ -113,6 +136,10 @@ function getPileStatusText(pile) {
     switch (pile.runStatus){
         case 1:
             runStatus = "空闲";
+            break;
+
+        case 2:
+            runStatus = "准备充电";
             break;
         case 3:
             runStatus = "充电中";
@@ -235,11 +262,15 @@ function savePileToLocalStorage() {
 
 //初始化本地存储变量
 if (!localStorage.isInitialized) {
-  localStorage.isActivated = true;   //监控开关
-  localStorage.isPushPhone = true;   //手机推送开关
-  localStorage.frequency = 1;        //监控时间周期
-  localStorage.isInitialized = true; //是否初始化了
-  localStorage.allPile = '';
+    localStorage.isActivated = true;   //监控开关
+    localStorage.frequency = 1;        //监控时间周期
+    localStorage.isInitialized = true; //是否初始化了
+    localStorage.allPile = '';
+
+    localStorage.isPushPhone = true;   //手机推送开关
+    localStorage.week = '1,2,3,4,5';
+    localStorage.startHour = 8;
+    localStorage.endHour = 18;
 }
 
 var allPile = []; //保存充电桩历史信息
