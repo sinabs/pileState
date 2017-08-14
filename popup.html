@@ -7,6 +7,7 @@
 <script src="js/underscore-min.js"></script>
 <script src="js/backbone-min.js"></script>
 <script src="js/bootstrap.min.js"></script>
+<script src="js/echarts.min.js"></script>
 <style>
 
 body{font-size:14px;}
@@ -24,10 +25,18 @@ body{font-size:14px;}
     padding: 10px;
     margin: 10px;
     border-style: solid;
+    min-width:422px;
 }
 .container{
     text-align:center;
 }
+
+.chart {
+    width: 100%;
+    height:90px;
+    padding:0px!important;
+}
+
 
 </style>
 </head>
@@ -44,6 +53,9 @@ body{font-size:14px;}
                 <td>状态:<span class="label <%=statusClass%>"><%=runStatus%></span></td>
                 <td>价格:<span class="label label-warning"><%=currentPrice%></span></td>
                 <td>进度:<span class="label label-info"><%=chargingProgress%></span></td>
+            </tr>
+            <tr>
+                <td id="<%=id%>" class="chart" colspan="3"></td>
             </tr>
         </tbody>
     </table>

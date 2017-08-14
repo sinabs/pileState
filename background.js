@@ -31,9 +31,15 @@ function checkPileState() {
                    fullPile.push(pile);
                }
 
-               if(checkPushPhone()){
-                   pushPhoneNotification(pile);
+               //如果充电桩的状态变化
+               if(pile.historyStatus != pile.runStatus){
+                   if(checkPushPhone()){
+                       pushPhoneNotification(pile);
+                   }
+                   //线形图数据更新
+                   pushLine(pile);
                }
+
            }
 
             //消息提示
@@ -96,7 +102,7 @@ function showBadgeInfo(pile,isNew) {
  * @param isNew
  */
 function pushNotification(pile,isNew) {
-    var runStatus = isNew?'空闲':'占用';
+    var runStatus = isNew?'空闲':'充满';
     new Notification('发现'+runStatus+'充电桩', {
         icon: '48.png',
         body: getPileIdString(pile)
@@ -106,24 +112,22 @@ function pushNotification(pile,isNew) {
 /**
  * 推送到手机消息
  * @param pile
- * @param isNew
  */
 function pushPhoneNotification(pile) {
     //充电桩发生变化通知手机
-    if(pile.historyStatus != pile.runStatus){
-        //拼接消息
-        var runStatus = getPileStatusText(pile);
-        var msg = '充电桩状态:['+runStatus+']';
-        var time = (new Date()).toLocaleTimeString();
-        msg = time +"\n" + msg +"\n" + pile.pileName;
+    //拼接消息
+    var runStatus = getPileStatusText(pile);
+    var msg = '充电桩状态:['+runStatus+']';
+    var time = (new Date()).toLocaleTimeString();
+    msg = time +"\n" + msg +"\n" + pile.pileName;
 
-        //请求推送通知
-        var data = "name=XTXiPhone&code=915117&msg[text]="+msg;
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", "https://qpush.me/pusher/push_site/", true);
-        xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded;");
-        xhr.send(data);
-    }
+    //请求推送通知
+    var data = "name=XTXiPhone&code=915117&msg[text]="+msg;
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "https://qpush.me/pusher/push_site/", true);
+    xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded;");
+    xhr.send(data);
+
 }
 
 /**
@@ -137,7 +141,6 @@ function getPileStatusText(pile) {
         case 1:
             runStatus = "空闲";
             break;
-
         case 2:
             runStatus = "准备充电";
             break;
@@ -148,7 +151,7 @@ function getPileStatusText(pile) {
             runStatus = "离线";
             break;
         case 8:
-            runStatus = "占用";
+            runStatus = "充满";
             break;
         default:
             runStatus = "不可用["+pile.runStatus+"]";
@@ -244,16 +247,41 @@ function findPile(pileId) {
 }
 
 /**
- * 删除可用充电桩数据
- * @param pileId
+ * 更新线形图的数据
+ * @param pile
  */
-function deletePile(pileId) {
-    for(var k in allPile) {
-        if (allPile[k].pileId == pileId) {
-            allPile.splice(k,1);
-        }
+function pushLine(pile) {
+    if(!line[pile.pileId]){
+        line[pile.pileId] = [];
     }
-    savePileToLocalStorage();
+
+    //x坐标数据
+    var d = new Date();
+    var x = (d.getHours())+':'+(d.getMinutes()<10?'0'+d.getMinutes():d.getMinutes());
+
+    //y坐标数据
+    var y = 0;
+    switch (pile.runStatus){
+        case 1:
+            y = 1;
+            break;
+        case 2:
+            y = 2;
+            break;
+        case 3:
+            y = 3;
+            break;
+        case 4:
+            y = 0;
+            break;
+        case 8:
+            y = 2;
+            break;
+    }
+
+    var len = line[pile.pileId].push({x:x, y:y});
+    if(len>12) line[pile.pileId].shift();
+    localStorage.line = line?JSON.stringify(line):'';
 }
 
 function savePileToLocalStorage() {
@@ -271,8 +299,10 @@ if (!localStorage.isInitialized) {
     localStorage.week = '1,2,3,4,5';
     localStorage.startHour = 8;
     localStorage.endHour = 18;
+    localStorage.line = ''
 }
 
+var line    = {};
 var allPile = []; //保存充电桩历史信息
 
 // Test for notification support.
