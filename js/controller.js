@@ -50,6 +50,7 @@ function makeChart(pileId) {
         $('#'+pileId).show();
         var x         = _.pluck(line[pileId], 'x');
         var y         = _.pluck(line[pileId], 'y');
+        var label     = ['坏','闲', '占', '充'];
         var lineChart = echarts.init($('#'+pileId)[0]);
         lineChart.setOption({
             grid: {
@@ -68,15 +69,29 @@ function makeChart(pileId) {
             yAxis: {
                 type: 'category',
                 boundaryGap: false,
-                data: ['坏','闲', '占', '充']
+                data: label
             },
             series: [{
-                name: '001',
                 type: 'line',
                 stack: '使用率',
                 data: y,
-                step: 'start'
-            }]
+                lineStyle:{
+                    normal:{
+                        color:"#0C9816"
+                    }
+                },
+                itemStyle:{
+                    normal:{
+                        color:"#0C9816"
+                    }
+                }
+            }],
+            tooltip:{
+                trigger:'axis',
+                formatter:function(params){
+                    return params[0].marker + params[0].name + ":" + label[params[0].value];
+                }
+            }
         });
     }else{
         $('#'+pileId).hide();

@@ -187,8 +187,8 @@ function getPileIdString(pile) {
  */
 function getPileStateData(callback){
     var xhr = new XMLHttpRequest();
-    xhr.open("GET", "http://yyc.renrenchongdian.com/charge/station/pileState/1014817007082332851", true);
-    //xhr.open("GET", "http://pms.bfc.com/pile.json", true);
+    //xhr.open("GET", "http://yyc.renrenchongdian.com/charge/station/pileState/1014817007082332851", true);
+    xhr.open("GET", "http://pms.bfc.com/pile.json", true);
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4) {
             // JSON解析器不会执行攻击者设计的脚本.
