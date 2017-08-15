@@ -122,12 +122,13 @@ function pushPhoneNotification(pile) {
     msg = time +"\n" + msg +"\n" + pile.pileName;
 
     //请求推送通知
-    var data = "name=XTXiPhone&code=915117&msg[text]="+msg;
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", "https://qpush.me/pusher/push_site/", true);
-    xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded;");
-    xhr.send(data);
-
+    if(localStorage.in_name && localStorage.in_code){
+        var data = "name="+localStorage.in_name+"&code="+localStorage.in_code+"&msg[text]="+msg;
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "https://qpush.me/pusher/push_site/", true);
+        xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded;");
+        xhr.send(data);
+    }
 }
 
 /**
@@ -299,7 +300,9 @@ if (!localStorage.isInitialized) {
     localStorage.week = '1,2,3,4,5';
     localStorage.startHour = 8;
     localStorage.endHour = 18;
-    localStorage.line = ''
+    localStorage.line = '';
+    localStorage.in_name = '';
+    localStorage.in_code = '';
 }
 
 var line    = {};
