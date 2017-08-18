@@ -1,6 +1,6 @@
 {
   "name": "充电桩监控通知",
-  "version": "1.0.2",
+  "version": "1.0.5",
   "description":
     "监控指定的的充电桩使用状态,并发出通知",
   "icons":
