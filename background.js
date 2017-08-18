@@ -38,8 +38,10 @@ function checkPileState() {
                    }
                    //线形图数据更新
                    pushLine(pile);
+               }else if((new Date()).getMinutes() == 0){
+                   //整点的线形图数据更新
+                   pushLine(pile);
                }
-
            }
 
             //消息提示
